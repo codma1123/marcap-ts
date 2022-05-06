@@ -1,11 +1,17 @@
 <template>
-    <v-card    
-      class="mt-5"    
-      height="auto"
-      width="256"
-      rounded="xl"        
+  <div class="mr-10">
+    <v-navigation-drawer 
+      class="ml-5 mt-5"     
+      bottom
+      permanent       
+      width="100%" 
+      :height="height < 500 ? 'auto' : '110%'"
     >
-      <v-navigation-drawer permanent>
+      <v-card    
+        height="auto"
+        width="100%"        
+        outlined        
+      >
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h7 text font-weight-bold">
@@ -36,6 +42,7 @@
               v-for="child in item.items"
               :key="child.title"
               link
+              replace
               :to="`/detail/${child.title}`"
             >
               <v-list-item-content>
@@ -54,6 +61,7 @@
               </v-list-item-action>
             </v-list-item>          
           </v-list-group>
+
           <v-speed-dial 
             absolute
             v-model="fab"
@@ -66,7 +74,7 @@
             <template v-slot:activator>
               <v-btn
                 elevation="0"
-                small
+                x-small
                 v-model="fab"              
                 fab
               >
@@ -90,7 +98,7 @@
                   :color="menu.color"
                   fab
                   dark
-                  small
+                  x-small
                   @click="menu.callback"
                 >
                   <v-icon>{{ menu.icon }}</v-icon>
@@ -98,24 +106,19 @@
               </template>
               <span>{{ menu.tooltip }}</span>
             </v-tooltip>
-          </v-speed-dial>
-        
-        </v-list>        
-      </v-navigation-drawer>    
+          </v-speed-dial>        
+      </v-list>        
     </v-card>
-      
+  </v-navigation-drawer>    
+
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Vue, Watch } from 'vue-property-decorator'
 import { isMobile } from '@/mixins/tools'
 import { IMenu } from '@/v2/pages/MenuBar.vue'
 
-@Component({
-  components: {
-
-  }
-})
 export default class SideBar extends Vue {
 
   private items = [
@@ -206,15 +209,24 @@ export default class SideBar extends Vue {
   ]
   
   private fab = false
-
   private drawer = false
   private group: boolean | null = null
-
   private isMobile = isMobile()
 
   @Watch('group')
   groupWatch() {
     this.group = false
+  }
+
+  get height () {
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs': return 220
+      case 'sm': return 400
+      case 'md': return 500
+      case 'lg': return 600
+      case 'xl': return 800    
+    }
+    return 800
   }
 }
 </script>

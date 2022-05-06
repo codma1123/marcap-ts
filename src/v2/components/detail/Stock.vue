@@ -1,8 +1,9 @@
 <template>
   <v-card     
-    class="mt-10 ml-10"
+    class="mt-5 ml-5"
     height="500"
     rounded="xl"
+    width="94%"
     outlined        
   >
     <v-carousel
@@ -17,11 +18,11 @@
       <v-carousel-item
         v-for="i in 2"
         :key="i"
-      >
+      >        
         <v-card height="auto">                    
           <stock-chart 
             class="ml-5 mr-5"                      
-            :height="'200'"
+            :height="200"
           />
         </v-card>
       </v-carousel-item>
@@ -30,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { namespace} from 'vuex-class'
 import StockChart from '@/v2/components/detail/StockChart.vue'
 
@@ -54,7 +55,7 @@ export default class Stock extends Vue {
 
   created () {
     this.getStockGraphDefaultLoaded(this.$route.params.title)
-  }
+  }  
 }
 
 </script>

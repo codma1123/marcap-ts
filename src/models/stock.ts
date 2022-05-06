@@ -39,10 +39,10 @@ export interface IMarketRecentModel {
 
 
 export interface IMarketRank {
-  marcap: Array<IMarketRanksContents>
-  change_incr: Array<IMarketRanksContents>
-  change_redu: Array<IMarketRanksContents>
-  volume: Array<IMarketRanksContents>
+  marcap: IMarketRanksContents[]
+  change_incr: IMarketRanksContents[]
+  change_redu: IMarketRanksContents[]
+  volume: IMarketRanksContents[]
 }
 
 export interface IMarketRanksContents {
@@ -103,27 +103,13 @@ export interface IStockModel {
   stocks: number
 }
 
-// export interface IStockStatementModel {
-//   [date: string]: Array<any>
-// }
-
-export interface IStockStatementChartModel {
+export interface IStockStatementBarChartModel {
   date: string[] 
   value: number[]
 }
 
-export interface IStockStatementModel {
-  asset?: IStockStatementChartModel
-  cash?: IStockStatementChartModel
-  current_asset?: IStockStatementChartModel
-  ebitda?: IStockStatementChartModel
-  equity?: IStockStatementChartModel
-  equity_non?: IStockStatementChartModel
-  gross_margin?: IStockStatementChartModel
-  liability?: IStockStatementChartModel
-  profit?: IStockStatementChartModel
-  profit_non?: IStockStatementChartModel
-  revenue?: IStockStatementChartModel  
+export interface ISimpleChartData {
+  [type: string]: IStockStatementBarChartModel
 }
 
 export interface IStockLineChartModel {

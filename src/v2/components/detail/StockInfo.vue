@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-card 
-      class="mt-10 ml-5 mr-5"
+      class="mt-5 ml-5"
       height="20%"
-      width="100%"
+      width="94%"
       rounded="xl"
       v-if="!loaded"    
     >    
@@ -83,14 +83,16 @@
 </template>
 
 <script lang="ts">
-import { IStockModel } from '@/models/stock'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+
+import { IStockModel } from '@/models/stock'
 
 const StockStoreModule = namespace('StockStore')
 
 @Component
 export default class StockInfo extends Vue {
+
   @StockStoreModule.Action('getStock')
   private getStock!: (name: string) => Promise<void>
 

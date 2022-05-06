@@ -109,7 +109,7 @@ export default class LineChart extends Vue {
     }
 
     this.chartOptions.animation = {
-      duration: 1200,
+      duration: 1000,
       easing: 'easeOutBounce'
     }
 
@@ -127,7 +127,7 @@ export default class LineChart extends Vue {
       },      
     }  
     
-    this.chartOptions.tooltips = {
+    this.chartOptions.tooltips = {            
       enabled: true,
       titleFontSize: 25,
       titleFontColor: MAIN_COLOR,
@@ -136,7 +136,8 @@ export default class LineChart extends Vue {
       displayColors: false,
       callbacks: {
         label: (tooltipItem) => tooltipItem.yLabel as string,        
-      }
+      },
+      intersect: false
     }    
   }
 
@@ -153,7 +154,6 @@ export default class LineChart extends Vue {
         { 
           label: this.type,
           data: [...[...marketType.data].reverse().slice(0, this.requestDate)].reverse().map((k: MarketModel) => k.close),
-          height: 30,
           fill: fill,
           borderColor: this.color,
           backgroundColor: transparentize(this.color, 0.8),

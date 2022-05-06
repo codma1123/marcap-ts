@@ -224,7 +224,6 @@ export default class StockRecommend extends Vue {
   @MarketStoreModule.State('recommedLoaded')
   private recommendLoaded!: boolean
 
-
   created () {
     this.sparkLineValue = [1, 11, 3, 4, 5, 7, 5, 9, 1, 5, 16]
     this.getRecommend()
