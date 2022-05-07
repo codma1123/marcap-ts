@@ -18,23 +18,21 @@ const MAIN_COLOR = '#40E0D0'
 })
 export default class StockChart extends Vue {
 
-
-  // data
   @Prop({default: false})
-  private fill!: boolean
+  fill!: boolean
   
   @Prop()
-  private chartData!: null
+  chartData!: any
 
-  @StockStoreModule.State('stockGraphDefault')
-  private stockGraphDefault!: IStockLineChartModel
+<<<<<<< HEAD
+=======
+  chartOptions: Chart.ChartOptions = {}
 
-  public chartOptions: Chart.ChartOptions = {}
-
+>>>>>>> v2
   // methods  
-  public renderChart!: (chartData: any, options: any) => any
+  renderChart!: (chartData: any, options: any) => any
 
-  public applyDefaultChartOptions (): void {
+  applyDefaultChartOptions (): void {
 
     this.chartOptions.maintainAspectRatio = true
     this.chartOptions.responsive = true
@@ -58,7 +56,11 @@ export default class StockChart extends Vue {
       yAxes: [{
         ticks: {
           callback: (value: string) => value.toLocaleString(),
+<<<<<<< HEAD
           fontSize: 20,          
+=======
+          fontSize: 20,
+>>>>>>> v2
         },
         gridLines: {
           display: true
@@ -85,12 +87,16 @@ export default class StockChart extends Vue {
     }  
   }
 
-  public createChartData() {
+  createChartData() {
     return {
-      labels: Object.keys(this.stockGraphDefault).map((date: string) => date.substr(5)),
+      labels: Object.keys(this.chartData).map((date: string) => date.substr(5)),
       datasets: [
         {
+<<<<<<< HEAD
           data : Object.values(this.stockGraphDefault),
+=======
+          data : Object.values(this.chartData),
+>>>>>>> v2
           fill: true,
           borderColor: MAIN_COLOR,
           backgroundColor: transparentize(MAIN_COLOR, 0.8),          
@@ -103,12 +109,11 @@ export default class StockChart extends Vue {
     }
   }
 
-  public renderLineChart () {    
+  renderLineChart () {    
     this.applyDefaultChartOptions()
     this.renderChart(this.createChartData(), this.chartOptions)    
   }
 
-  // hooks
   mounted () {    
     this.renderLineChart()    
   }

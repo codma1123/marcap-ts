@@ -1,11 +1,12 @@
 <template>
   <div class="mr-10">
     <v-navigation-drawer        
-      class="ml-5 mt-5"      
-      bottom      
+      :class="['ml-5', mobile ? 'mt-0' : 'mt-5']"
+      bottom         
       permanent
-      width="100%"
-      :height="height < 500 ? '100%' : '110%'"
+      :fixed="mobile"
+      :width="mobile ? '94%' : '110%'"
+      :height="mobile ? '72' : '110%'"
     >
       <v-card       
         width="100%"
@@ -78,6 +79,7 @@
 </template>
 
 <script lang="ts">
+
 import { StockSimpleModel } from '@/models/stock'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
@@ -101,7 +103,7 @@ export interface IMenu {
 @Component
 export default class MenuBar extends Vue {
 
-  private menus: IMenu[] = [    
+  menus: IMenu[] = [    
     {      
       icon: 'search',
       tooltip: '검색',
@@ -138,38 +140,40 @@ export default class MenuBar extends Vue {
     },
   ]
 
-  private searchs = ''
-  private search: any = null
-  private items: string[] = []
-  private loading = false
-  private dialog = false
-  private expand = false
-  private darkMode = false
-
-  @MarketStoreModule.State('searchTable')
-  private searchTable!: StockSimpleModel[]
-
-  @StockStoreModule.Action('getStock')
-  private getStock!: (name: string) => Promise<void>
-
-  @Watch("search")
-  public watchSearch(val: unknown) {
-    if(!val) return
-    val && val !== this.searchTable && this.querySelections(val)
-  }  
+  searchs = ''
+  search: any = null
+  items: string[] = []
+  loading = false
+  dialog = false
+  expand = false
+  darkMode = false
 
   get switchLabel () {
     return this.darkMode ? 'light' : 'dark'
   }
 
-  get height () {
-    return mobileHeight(this.$vuetify.breakpoint.name)
+  get mobile () {
+    return mobileHeight(this.$vuetify.breakpoint.name) < 500
   }
 
-  private querySelections(val: any) {
+  @MarketStoreModule.State('searchTable')
+  searchTable!: StockSimpleModel[]
+
+  @StockStoreModule.Action('getStock')
+  getStock!: (name: string) => Promise<void>
+
+  @Watch("search")
+  watchSearch(val: unknown) {
+    if(!val) return
+    val && val !== this.searchTable && this.querySelections(val)
+  }  
+
+
+  querySelections(val: any) {
     let timeout=  0
     this.loading = true
     window.clearTimeout(timeout)
+
     setTimeout(() => {
       this.items = this.searchTable.map((s: StockSimpleModel) => s.title).filter(e => {
         return ( e || '').toLowerCase().indexOf((val || '').toLowerCase()) > -1
@@ -178,23 +182,23 @@ export default class MenuBar extends Vue {
     }, 500)
   }
 
-  private toggleDarkMode() {    
+  toggleDarkMode() {    
     this.$vuetify.theme.dark = !this.$vuetify.theme.dark
     this.darkMode = !this.darkMode        
   }
 
-  private searchExpand () {
+  searchExpand () {
     this.expand = !this.expand
   }  
 
-  private push(item: string) {
+  push(item: string) {
     this.search = null
     this.searchExpand()
+
     this.getStock(item).then(() => {
       this.$router.push(`/detail/${item}`)
     });    
     (document.activeElement as HTMLElement).blur()      
   }
-
 }
 </script>

@@ -1,19 +1,17 @@
 import colorLib, { Color } from '@kurkle/color';
 import { ISimpleChartData } from '@/models/stock';
 
-// 가격을 정규화합니다.
+// 가격을 정규화 합니다.
 export function priceNormalization(price: number | string): string {
   return typeof price === 'number' ? 
     price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") :
     price.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
 }
 
-
 // 모바일 여부를 판별합니다.
 export function isMobile(): boolean | any {    
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); 
 }
-
 
 // 색상의 투명도를 조절합니다.
 export function transparentize(value: string | number[] | Color, opacity?: number) {

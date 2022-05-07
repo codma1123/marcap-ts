@@ -2,7 +2,9 @@ import { Module, VuexModule, Action, Mutation } from "vuex-module-decorators";
 import axios from "axios";
 import { IMarketRank , IStockModel, ISimpleChartData } from "@/models/stock";
 import { IUpdateStateModel } from "@/models/payload";
-import { convertChartData } from '@/mixins/tools'
+
+import { convertChartData } from "@/mixins/tools";
+
 const URL = '/api'
 const HEADER = {
   headers: {
@@ -59,7 +61,6 @@ export default class StockStore extends VuexModule {
   public indicator: ISimpleChartData = {}
   public indicatorTypes: string[] = []
 
-    
   // Mutations
   // state를 초기화합니다.
   @Mutation
@@ -68,6 +69,10 @@ export default class StockStore extends VuexModule {
       this[state[0]] = state[1]
     })        
   }
+  
+  
+  // Actions
+  // 비동기 로직을 실행합니다.
 
 
   // Actions
@@ -117,10 +122,11 @@ export default class StockStore extends VuexModule {
   public async getStockGraphDefault(name: string): Promise<void> {
     try {
       this.context.commit('updateState', {
-        stockGraphDefaultLoaded: true,        
+        stockGraphDefaultLoaded: true
       })
 
       const res = await axios(`${URL}/stock/graph/${name}`, HEADER)
+
       this.context.commit('updateState', {
         stockGraphDefault: res.data,
         stockGraphDefaultLoaded: false
@@ -136,20 +142,19 @@ export default class StockStore extends VuexModule {
   public async getStockIndicator(name: string): Promise<void> {
     try {
       this.context.commit('updateState', {
-        indicatorLoaded: true
+        indicatorLoaded: true,        
       })
 
       const res = await axios(`${URL}/stock/indicator/${name}`, HEADER)
-      console.log(res.data)
 
       const label = Object.keys(res.data).slice(0, 4)      
       const value = Object.values(res.data).slice(0, 4) as string[]  
       const keys = Object.keys(value[0][0]).slice(1)
-      
+
       this.context.commit('updateState', {
         indicatorTypes: keys,
         indicator: convertChartData(keys, value, label),
-        indicatorLoaded: false,
+        indicatorLoaded: false,        
       })
       
     } catch(e) {
@@ -157,7 +162,7 @@ export default class StockStore extends VuexModule {
     }
   }
 
-  // 종목 하나의 5년지 보조지표를 가져옵니다.
+   // 종목 하나의 5년지 보조지표를 가져옵니다.
   @Action
   public async getStockStatementAll(name: string): Promise<void> {
     try {
@@ -190,7 +195,6 @@ export default class StockStore extends VuexModule {
       const label = Object.keys(res.data)
       const value = Object.values(res.data) as string[]                        
       const keys = Object.keys(value[0][0])
-      
       this.context.commit('updateState', {
         statementTypes: keys.filter((key: string) => key !== 'type'),
         statement: convertChartData(keys, value, label),
@@ -201,4 +205,5 @@ export default class StockStore extends VuexModule {
       console.log(e)
     }
   }  
+  
 }

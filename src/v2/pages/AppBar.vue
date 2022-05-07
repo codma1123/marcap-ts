@@ -34,7 +34,7 @@ import { RouteModel } from '@/models/app'
 @Component
 export default class AppBar extends Vue {
 
-  private links: RouteModel[] = [
+  links: RouteModel[] = [
     {
       title: '오늘의 주식 시장',
       route: '/'
@@ -49,7 +49,7 @@ export default class AppBar extends Vue {
     }
   ]
 
-  private push(link: RouteModel): void {    
+  push(link: RouteModel): void {    
     this.$router.push(link.route)
   }
 }

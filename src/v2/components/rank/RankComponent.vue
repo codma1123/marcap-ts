@@ -58,6 +58,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import RankContents from '@/v2/components/rank/RankContents.vue'
 import { IMarketRanksContents } from '@/models/stock'
 
+import { IMarketRanksContents } from '@/models/stock'
+
 @Component({
   components: {
     RankContents
@@ -65,10 +67,17 @@ import { IMarketRanksContents } from '@/models/stock'
 })
 export default class RankComponent extends Vue {
   @Prop()
+<<<<<<< HEAD
   private contents!: IMarketRanksContents
 
   @Prop({default: ''})
   private type!: string
   
+=======
+  contents!: IMarketRanksContents
+
+  @Prop({default: ''})
+  type!: string  
+>>>>>>> v2
 }
 </script>

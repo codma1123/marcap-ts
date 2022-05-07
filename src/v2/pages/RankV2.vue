@@ -1,18 +1,18 @@
-<template >
-  <v-row v-if="!loaded">
-    <v-col 
+<template>
+  <v-row>
+    <v-col  
       cols="12"
       xl="4"
       lg="4"
-      v-for="type in Object.keys(dailySimpleRanks)"
-      :key="type"
-    >
-      <rank-component 
-        :type="type"
-        :contents="dailySimpleRanks[type]" 
-      />
-    </v-col>    
-  </v-row>
+      v-for="rankType in Object.keys(dailySimpleRanks)"
+      :key="rankType"
+      >
+        <rank-component
+          :type="rankType"
+          :contents="dailySimpleRanks[rankType].slice(0, 10)"
+        />
+    </v-col>
+  </v-row>  
 </template>
 
 <script lang="ts">
@@ -30,15 +30,16 @@ const StockStoreModule = namespace('StockStore')
   }
 })
 export default class RankV2 extends Vue {
+
   @StockStoreModule.Action('getDailySimpleRanks')  
-  private readonly getDailySimpleRanks!: () => Promise<void>
+  readonly getDailySimpleRanks!: () => Promise<void>
 
   @StockStoreModule.State('dailySimpleRanks')
-  private dailySimpleRanks!: IMarketRank
+  dailySimpleRanks!: IMarketRank
 
   @StockStoreModule.State('dailySimpleRanksLoaded')
-  private loaded!: boolean
-
+  loaded!: boolean
+  
   created () {
     this.getDailySimpleRanks().then(() => {
       console.log(this.dailySimpleRanks)

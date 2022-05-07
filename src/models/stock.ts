@@ -1,5 +1,3 @@
-
-//
 export interface StockSimpleModel {
  title: string
  code: string
@@ -103,13 +101,26 @@ export interface IStockModel {
   stocks: number
 }
 
+export interface ISimpleChartData {
+  [type: string]: IStockStatementBarChartModel
+}
 export interface IStockStatementBarChartModel {
   date: string[] 
   value: number[]
 }
 
-export interface ISimpleChartData {
-  [type: string]: IStockStatementBarChartModel
+export interface IStockStatementModel {
+  asset?: IStockStatementBarChartModel
+  cash?: IStockStatementBarChartModel
+  current_asset?: IStockStatementBarChartModel
+  ebitda?: IStockStatementBarChartModel
+  equity?: IStockStatementBarChartModel
+  equity_non?: IStockStatementBarChartModel
+  gross_margin?: IStockStatementBarChartModel
+  liability?: IStockStatementBarChartModel
+  profit?: IStockStatementBarChartModel
+  profit_non?: IStockStatementBarChartModel
+  revenue?: IStockStatementBarChartModel  
 }
 
 export interface IStockLineChartModel {

@@ -1,8 +1,7 @@
 <template>
   <div class="mr-10">
     <v-navigation-drawer 
-      class="ml-5 mt-5"     
-      bottom
+      :class="['ml-5', height < 500 ? 'mt-15' : 'mt-5']"     
       permanent       
       width="100%" 
       :height="height < 500 ? 'auto' : '110%'"
@@ -25,10 +24,12 @@
 
         <v-divider></v-divider>
 
-        <v-list>
+        <v-list two-line>
           <v-list-group
-            v-for="item in items"
-            :key="item.title"
+            active-class="secondary" 
+            :value="true"
+            v-for="(item, i) in itemsV2"
+            :key="i"
             v-model="item.active"          
             append-icon='mdi-chevron-down'
           >
@@ -39,8 +40,8 @@
             </template> 
 
             <v-list-item
-              v-for="child in item.items"
-              :key="child.title"
+              v-for="(child, i) in item.items"
+              :key="i"
               link
               replace
               :to="`/detail/${child.title}`"
@@ -58,8 +59,8 @@
                 >
                   <v-icon>fa-edit</v-icon>
                 </v-btn>
-              </v-list-item-action>
-            </v-list-item>          
+              </v-list-item-action>                    
+            </v-list-item> 
           </v-list-group>
 
           <v-speed-dial 
@@ -115,13 +116,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+
 import { isMobile } from '@/mixins/tools'
 import { IMenu } from '@/v2/pages/MenuBar.vue'
+import { IInterestGroup, IInterestGroupItem } from '@/models/interest'
+
+const InterestStoreModule = namespace('InterestStore')
 
 export default class SideBar extends Vue {
-
-  private items = [
+  items = [
     {
       action: 'mdi-ticket',
       active: false,
@@ -181,7 +186,19 @@ export default class SideBar extends Vue {
     },    
   ]
 
-  private menus: Array<IMenu> = [
+  get itemsV2 () {
+    return this.interestGroups.map((group: IInterestGroup) => ({
+      title: group.title,
+      action: 'mdi-ticket',
+      active: false,
+      items: group.item.map((item: IInterestGroupItem) => ({
+        title: item.title,
+        subtitle: item.code
+      }))
+    })) 
+  }
+
+  menus: Array<IMenu> = [
     {
       icon: 'mdi-pencil',
       tooltip: '그룹 편집',
@@ -208,15 +225,9 @@ export default class SideBar extends Vue {
     }
   ]
   
-  private fab = false
-  private drawer = false
-  private group: boolean | null = null
-  private isMobile = isMobile()
-
-  @Watch('group')
-  groupWatch() {
-    this.group = false
-  }
+  fab = false
+  drawer = false
+  group: boolean | null = null
 
   get height () {
     switch (this.$vuetify.breakpoint.name) {
@@ -227,6 +238,21 @@ export default class SideBar extends Vue {
       case 'xl': return 800    
     }
     return 800
+  }
+
+  @Watch('group')
+  groupWatch() {
+    this.group = false
+  }
+   
+  @InterestStoreModule.State('interestGroups')
+  interestGroups!: IInterestGroup[]
+
+  @InterestStoreModule.Mutation('initInterestGroup')
+  readonly initInterestGroup!: () => void
+
+  created () {
+    this.initInterestGroup()    
   }
 }
 </script>

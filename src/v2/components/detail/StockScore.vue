@@ -16,7 +16,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import StockScoreChart from '@/v2/components/detail/StockScoreChart.vue'
+<<<<<<< HEAD
 
+=======
+>>>>>>> v2
 import { namespace } from 'vuex-class'
 import { ISimpleChartData } from '@/models/stock'
 
@@ -30,6 +33,7 @@ const StockStoreModule = namespace('StockStore')
 export default class StockScore extends Vue {
 
   @StockStoreModule.State('indicatorLoaded')
+<<<<<<< HEAD
   private loaded!: boolean
 
   @StockStoreModule.State('indicator')
@@ -37,9 +41,22 @@ export default class StockScore extends Vue {
 
   @StockStoreModule.Action('getStockIndicator')
   private readonly getStockIndicator!: (name: string) => Promise<void>
+=======
+  loaded!: boolean
+
+  @StockStoreModule.State('indicator')
+  indicator!: ISimpleChartData
+
+  @StockStoreModule.Action('getStockIndicator')
+  readonly getStockIndicator!: (name: string) => Promise<void>
+>>>>>>> v2
 
   created () {
     this.getStockIndicator(this.$route.params.title)
   }
 }
+<<<<<<< HEAD
 </script>
+=======
+</script> 
+>>>>>>> v2

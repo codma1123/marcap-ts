@@ -5,10 +5,10 @@
     rounded="xl"
     width="94%"
     outlined        
+    v-if="!loaded"      
   >
     <v-carousel
       height="auto"
-      v-if="!loaded"      
       cycle
       hide-delimiter-background
       show-arrows-on-hover    
@@ -23,6 +23,10 @@
           <stock-chart 
             class="ml-5 mr-5"                      
             :height="200"
+<<<<<<< HEAD
+=======
+            :chartData="stockGraphDefault"
+>>>>>>> v2
           />
         </v-card>
       </v-carousel-item>
@@ -31,8 +35,13 @@
 </template>
 
 <script lang="ts">
+<<<<<<< HEAD
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { namespace} from 'vuex-class'
+=======
+import { Component, Vue } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+>>>>>>> v2
 import StockChart from '@/v2/components/detail/StockChart.vue'
 
 const StockStoreModule = namespace('StockStore')
@@ -45,17 +54,22 @@ const StockStoreModule = namespace('StockStore')
 export default class Stock extends Vue {
   
   @StockStoreModule.State('stockGraphDefault')
-  private stockGraphDefault: any
+  stockGraphDefault!: any
 
   @StockStoreModule.State('stockGraphDefaultLoaded')
-  private loaded!: boolean
+  loaded!: boolean
 
   @StockStoreModule.Action('getStockGraphDefault')
-  private getStockGraphDefaultLoaded!: (name: string) => Promise<void>
+  getStockGraphDefault!: (name: string) => Promise<void>
 
   created () {
+<<<<<<< HEAD
     this.getStockGraphDefaultLoaded(this.$route.params.title)
   }  
+=======
+    this.getStockGraphDefault(this.$route.params.title)
+  }
+>>>>>>> v2
 }
 
 </script>
